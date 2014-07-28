@@ -1,0 +1,15 @@
+parameters:
+    hw_basics.layoutservice.class: Hw\BasicsBundle\Twig\LayoutService
+    hw_basics.menufactory.class: Hw\BasicsBundle\Menu\MenuFactory
+
+services:
+    hw_basics.layoutservice:
+        class: %hw_basics.layoutservice.class%
+    hw_basics.menufactory:
+        class: %hw_basics.menufactory.class%
+        arguments: [@hw_basics.layoutservice]
+    hw_basics.twig.hw_basics_extension:
+        class: Hw\BasicsBundle\Twig\HwBasicsExtension
+        arguments: [@hw_basics.layoutservice]
+        tags:
+            - { name: twig.extension }
