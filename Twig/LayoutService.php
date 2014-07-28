@@ -61,13 +61,12 @@ class LayoutService
 	/**
 	 * Adds a new Breadcrumb object with a key.
 	 *
-	 * @param string $key
 	 * @param BreadcrumbInterface $breadcrumb
 	 * @return $this
 	 */
-	public function addBreadcrumb($key, BreadcrumbInterface $breadcrumb)
+	public function addBreadcrumb(BreadcrumbInterface $breadcrumb)
 	{
-		$this->breadcrumbs->add($key, $breadcrumb);
+		$this->breadcrumbs->add($breadcrumb);
 		return $this;
 	}
 
