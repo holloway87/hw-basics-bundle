@@ -11,7 +11,7 @@ namespace Hw\BasicsBundle\Tests\Twig;
 use Hw\BasicsBundle\Breadcrumb\Breadcrumb;
 use Hw\BasicsBundle\Menu\Menu;
 use Hw\BasicsBundle\Menu\MenuItem;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Hw\BasicsBundle\Test\ContainerTestCase;
 
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @author Thomas Rudolph <me@holloway-web.de>
  * @since 2014.07.29
  */
-class LayoutServiceTest extends KernelTestCase
+class LayoutServiceTest extends ContainerTestCase
 {
 
 	/**
@@ -28,11 +28,8 @@ class LayoutServiceTest extends KernelTestCase
 	 */
 	public function testServiceExistence()
 	{
-		static::bootKernel();
-		$container = self::$kernel->getContainer();
-
 		// Check for the layout service existence.
-		$this->assertTrue($container->has('hw_basics.layoutservice'));
+		$this->assertServiceExistence('hw_basics.layoutservice');
 	}
 
 	/**

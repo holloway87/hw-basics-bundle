@@ -9,9 +9,9 @@
 namespace Hw\BasicsBundle\Tests\Menu;
 
 use Hw\BasicsBundle\Menu\Menu;
+use Hw\BasicsBundle\Test\ContainerTestCase;
 use Hw\BasicsBundle\Tests\Menu\Type\ErrorMenuType;
 use Hw\BasicsBundle\Tests\Menu\Type\SimpleMenuType;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @author Thomas Rudolph <me@holloway-web.de>
  * @since 2014.07.29
  */
-class MenuFactoryTest extends KernelTestCase
+class MenuFactoryTest extends ContainerTestCase
 {
 
 	/**
@@ -31,14 +31,11 @@ class MenuFactoryTest extends KernelTestCase
 	 */
 	public function testServiceExistence()
 	{
-		static::bootKernel();
-		$container = self::$kernel->getContainer();
-
 		// Checks for the factory service extistence.
-		$this->assertTrue($container->has('hw_basics.menufactory'));
+		$this->assertServiceExistence('hw_basics.menufactory');
 
 		// Checks for the layout service existence.
-		$this->assertTrue($container->has('hw_basics.layoutservice'));
+		$this->assertServiceExistence('hw_basics.layoutservice');
 	}
 
 	/**
@@ -51,8 +48,7 @@ class MenuFactoryTest extends KernelTestCase
 	 */
 	public function testFactory()
 	{
-		static::bootKernel();
-		$container = self::$kernel->getContainer();
+		$container = $this->getContainer();
 		$factory = $container->get('hw_basics.menufactory');
 
 		$factory->create(new SimpleMenuType(), new Menu());
@@ -72,9 +68,7 @@ class MenuFactoryTest extends KernelTestCase
 	 */
 	public function testFactoryException()
 	{
-		static::bootKernel();
-		$container = self::$kernel->getContainer();
-		$factory = $container->get('hw_basics.menufactory');
+		$factory = $this->getContainer()->get('hw_basics.menufactory');
 
 		// Checks for Exception when no name is returned from the menu type.
 		$factory->create(new ErrorMenuType(), new Menu());
