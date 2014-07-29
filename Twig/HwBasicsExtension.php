@@ -7,7 +7,7 @@
  */
 
 namespace Hw\BasicsBundle\Twig;
-use Hw\BasicsBundle\Breadcrumb\Breadcrumbs;
+
 use Hw\BasicsBundle\Menu\MenuItem;
 
 
