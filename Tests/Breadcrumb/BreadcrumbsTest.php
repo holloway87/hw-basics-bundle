@@ -24,9 +24,9 @@ class BreadcrumbsTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * Tests the Breacrumb and Breadcrumbs classes.
 	 *
-	 * Adds 2 Breadcrumbs and checks for count.
-	 * Checks for labels and urls in breadrumb entities.
-	 * Clears breadcrumbs and checks for count.
+	 * * Adds 2 Breadcrumbs and checks for count.
+	 * * Checks for labels and urls in breadrumb entities.
+	 * * Clears breadcrumbs and checks for count.
 	 */
 	public function testBreadcrumbs()
 	{

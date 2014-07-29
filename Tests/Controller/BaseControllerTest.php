@@ -21,8 +21,10 @@ class BaseControllerTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * Checks if the generated password has the correct length.
-	 * And another one with passed characters.
+	 * Checks the generatorPassword Method
+	 *
+	 * * Checks if the generated password has the correct length.
+	 * * And another one with passed characters.
 	 */
 	public function testPasswordGenerator()
 	{
