@@ -17,15 +17,4 @@ namespace Hw\BasicsBundle\Menu;
  */
 abstract class AbstractMenuType implements MenuTypeInterface
 {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function build(MenuInterface $menu);
-
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function getName();
-
 }
