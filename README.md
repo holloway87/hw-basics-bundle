@@ -29,6 +29,7 @@ These are some features this bundle gives you:
  * Use your menus in twig layouts with a global function
  * Create Breadcrumbs and access them in your twig layouts with a global function
  * A base controller class exists to easily encode an entity's password or generate a random one
+ * Copy twitter bootstrap files to your resource directory on composer update or install
 
 
 Feature plans
