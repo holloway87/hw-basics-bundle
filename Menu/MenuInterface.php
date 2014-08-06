@@ -13,21 +13,24 @@ namespace Hw\BasicsBundle\Menu;
  * Interface for a menu.
  *
  * @author Thomas Rudolph <me@holloway-web.de>
+ * @since 2014.08.06 Extends the MenuBasicInterface for hierarchic menus.
  * @since 2014.07.27
  */
-interface MenuInterface
+interface MenuInterface extends MenuBasicInterface
 {
 
 	/**
-	 * Adds a new item to the menu with the given key.
+	 * Adds a new item or menu to the menu with the given key.
 	 *
 	 * If a key already exists the menu item will be overridden.
+	 * This Method should set the parent menu for the item.
 	 *
+	 * @since 2014.08.06 $item must be instance of MenuBasicInterface to be a menu or a menu item
 	 * @param string $key
-	 * @param MenuItem $item
+	 * @param MenuBasicInterface $item
 	 * @return $this
 	 */
-	public function add($key, MenuItem $item);
+	public function add($key, MenuBasicInterface $item);
 
 	/**
 	 * Clears all items.
@@ -48,24 +51,21 @@ interface MenuInterface
 	 * Returns the menu item for the given key.
 	 *
 	 * If the key doesn't exist, it returns null.
-	 * The key should be a string, but scalar variables will be converted into a string.
 	 *
 	 * @param string $key
-	 * @return MenuItem|null
+	 * @return MenuItemInterface|null
 	 */
 	public function get($key);
 
 	/**
 	 * Returns all menu items.
 	 *
-	 * @return MenuItem[]
+	 * @return MenuItemInterface[]
 	 */
 	public function getItems();
 
 	/**
 	 * Removes the item with the given key.
-	 *
-	 * The key should be a string, but scalar variables will be converted into a string.
 	 *
 	 * @param string $key
 	 * @return $this
@@ -76,11 +76,10 @@ interface MenuInterface
 	 * Set the active item with the given key.
 	 *
 	 * Automaticely deactivates the old active item, if set.
-	 * The key should be a string, but scalar variables will be converted into a string.
 	 *
 	 * @param string $key
 	 * @return bool
 	 */
-	public function setActive($key);
+	public function setActiveItem($key);
 
 }

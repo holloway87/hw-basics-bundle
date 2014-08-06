@@ -44,6 +44,37 @@ class LayoutService
 	}
 
 	/**
+	 * Returns the menu for the given key if it exists, otherwise null.
+	 *
+	 * @since 2014.08.06
+	 * @param string $key
+	 * @return MenuInterface|null
+	 */
+	private function _getMenu($key)
+	{
+		$keys = explode('.', $key);
+		if (empty($keys))
+		{
+			return null;
+		}
+
+		if (!isset($this->menus[$keys[0]]))
+		{
+			return null;
+		}
+		$menu = $this->menus[$keys[0]];
+		for ($k = 1; $k < count($keys); $k++)
+		{
+			$menu = $menu->get($keys[$k]);
+			if (is_null($menu))
+			{
+				return null;
+			}
+		}
+		return $menu;
+	}
+
+	/**
 	 * Adds a new Menu object with a key.
 	 *
 	 * Overrides the Menu if the key already exists.
@@ -81,18 +112,62 @@ class LayoutService
 	}
 
 	/**
+	 * Returns if the menu exists.
+	 *
+	 * Can be dot separated to get sub menus.
+	 *
+	 * @since 2014.08.06
+	 * @param $key
+	 * @return bool
+	 */
+	public function existsMenu($key)
+	{
+		$menu = $this->_getMenu($key);
+		return is_null($menu) ? false : true;
+	}
+
+	/**
+	 * Returns the menu item for the given key.
+	 *
+	 * Can be dot separated to get items from submenus.
+	 *
+	 * @param $key
+	 * @return MenuItem|null
+	 */
+	public function getMenuItem($key)
+	{
+		$lastDot = strrpos($key, '.');
+		if (false === $lastDot)
+		{
+			return null;
+		}
+		$menuKey = substr($key, 0, $lastDot);
+		$menu = $this->_getMenu($menuKey);
+		if (is_null($menu))
+		{
+			return null;
+		}
+		$itemKey = substr($key, $lastDot +1);
+		return $menu->get($itemKey);
+	}
+
+	/**
 	 * Returns all menu items for the given menu key.
 	 *
+	 * Can be dot separated to get submenus.
+	 *
+	 * @since 2014.08.06 Using _getMenu() method to get submenus.
 	 * @param string $key
 	 * @return MenuItem[]|null
 	 */
 	public function getMenuItems($key)
 	{
-		if (!isset($this->menus[$key]))
+		$menu = $this->_getMenu($key);
+		if (is_null($menu))
 		{
 			return null;
 		}
-		return $this->menus[$key]->getItems();
+		return $menu->getItems();
 	}
 
 	/**
@@ -104,11 +179,12 @@ class LayoutService
 	 */
 	public function setMenuItemActive($menuKey, $itemKey)
 	{
-		if (!isset($this->menus[$menuKey]))
+		$menu = $this->_getMenu($menuKey);
+		if (is_null($menu))
 		{
 			return $this;
 		}
-		$this->menus[$menuKey]->setActive($itemKey);
+		$menu->setActiveItem($itemKey);
 		return $this;
 	}
 

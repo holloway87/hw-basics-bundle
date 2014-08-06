@@ -64,6 +64,8 @@ class MenuFactoryTest extends ContainerTestCase
 	/**
 	 * Checks for Exception when no name is returned from the menu type.
 	 *
+	 * @since 2014.08.06 Added depencency from testServiceExistence
+	 * @depends testServiceExistence
 	 * @expectedException \RuntimeException
 	 */
 	public function testFactoryException()

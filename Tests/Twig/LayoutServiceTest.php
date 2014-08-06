@@ -38,7 +38,9 @@ class LayoutServiceTest extends ContainerTestCase
 	 * * Checks for breadcrumbs count.
 	 * * Checks for menu existence.
 	 * * Checks for active menu item.
+	 * * Check for submenu item.
 	 *
+	 * @since 2014.08.06 Added check for submenu item.
 	 * @depends testServiceExistence
 	 */
 	public function testServiceMethods()
@@ -65,6 +67,15 @@ class LayoutServiceTest extends ContainerTestCase
 		// Checks for active menu item.
 		$layoutService->setMenuItemActive($menuKey, $item1Key);
 		$this->assertTrue($menu->get($item1Key)->getActive());
+
+		// Check for submenu item.
+		$item1 = new MenuItem('Label 1');
+		$submenuKey = 'submenu';
+		$submenu = new Menu();
+		$submenu->setLabel('Menu Label');
+		$submenu->add($item1Key, $item1);
+		$menu->add($submenuKey, $submenu);
+		$this->assertEquals($item1, $layoutService->getMenuItem($menuKey.'.'.$submenuKey.'.'.$item1Key));
 	}
 
 }

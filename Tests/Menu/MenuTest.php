@@ -26,10 +26,14 @@ class MenuTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * * Check for menu items count.
 	 * * Check for item values.
+	 * * Check if object is menu or not.
 	 * * Check active status on items.
 	 * * Check for item existence.
 	 * * Check existence after removing item.
 	 * * Check item count after clearing menu items.
+	 * * Check for menu parent after add and after remove.
+	 *
+	 * @since 2014.08.06 Added test for parent menu, more tests for active status and if object is menu.
 	 */
 	public function testMenu()
 	{
@@ -57,11 +61,21 @@ class MenuTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($target, $menu->get('item1')->getTarget());
 		$this->assertNull($menu->get('item2')->getTarget());
 
+		// Check if object is menu or not.
+		$this->assertTrue($menu->isMenu());
+		$this->assertFalse($item1->isMenu());
+
 		// Check active status on items.
-		$menu->setActive('item1');
+		$menu->setActiveItem('item1');
 		$this->assertTrue($menu->get('item1')->getActive());
-		$menu->setActive('item2');
+		$menu->setActiveItem('item2');
 		$this->assertFalse($menu->get('item1')->getActive());
+		$submenu = new Menu();
+		$submenu->add('subitem', new MenuItem());
+		$menu->add('submenu', $submenu);
+		$submenu->setActiveItem('subitem');
+		$this->assertTrue($submenu->getActive());
+		$this->assertNotTrue($menu->getActive());
 
 		// Check for item existence.
 		$this->assertTrue($menu->exists('item1'));
@@ -74,6 +88,12 @@ class MenuTest extends \PHPUnit_Framework_TestCase
 		// Check item count after clearing menu items.
 		$menu->clear();
 		$this->assertCount(0, $menu->getItems());
+
+		// Check for menu parent after add and after remove.
+		$menu->add('item1', $item1);
+		$this->assertEquals($menu, $item1->getParentMenu());
+		$menu->remove('item1');
+		$this->assertNull($item1->getParentMenu());
 	}
 
 }
