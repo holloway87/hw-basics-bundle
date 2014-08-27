@@ -76,4 +76,19 @@ class MenuFactoryTest extends ContainerTestCase
 		$factory->create(new ErrorMenuType(), new Menu());
 	}
 
+	/**
+	 * Checks for Exception when type name is not registered.
+	 *
+	 * @since 2014.08.27
+	 * @depends testServiceExistence
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testFactoryWrongTypeException()
+	{
+		$factory = $this->getContainer()->get('hw_basics.menufactory');
+
+		// Checks for Exception when type name is not registered.
+		$factory->create('nonexisting.menu.type', new Menu());
+	}
+
 }

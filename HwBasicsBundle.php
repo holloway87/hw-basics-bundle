@@ -8,8 +8,29 @@
 
 namespace Hw\BasicsBundle;
 
+use Hw\BasicsBundle\DependencyInjection\Compiler\MenuTypeCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+
+/**
+ * Holloway's Basics Bundle
+ *
+ * @author Thomas Rudolph <me@holloway-web.de>
+ */
 class HwBasicsBundle extends Bundle
 {
+
+	/**
+	 * Adds the menu type compiler pass.
+	 *
+	 * @since 2014.08.27
+	 * @param ContainerBuilder $container
+	 */
+	public function build(ContainerBuilder $container)
+	{
+		parent::build($container);
+		$container->addCompilerPass(new MenuTypeCompilerPass());
+	}
+
 }

@@ -8,6 +8,7 @@
 
 namespace Hw\BasicsBundle\Menu;
 
+use Hw\BasicsBundle\Exception\UnexpectedTypeException;
 use Hw\BasicsBundle\Twig\LayoutService;
 
 
@@ -27,15 +28,26 @@ class MenuFactory
 	 */
 	private $layoutservice;
 
+	/**
+	 * Type Extension holding all menu types.
+	 *
+	 * @since 2014.08.27
+	 * @var TypeExtensionInterface
+	 */
+	private $typeExtension;
+
 
 	/**
 	 * Sets the layout service.
 	 *
+	 * @since 2014.08.27 Added type extension object
 	 * @param LayoutService $layoutService
+	 * @param TypeExtensionInterface $typeExtension
 	 */
-	public function __construct(LayoutService $layoutService)
+	public function __construct(LayoutService $layoutService, TypeExtensionInterface $typeExtension)
 	{
 		$this->layoutservice = $layoutService;
+		$this->typeExtension = $typeExtension;
 	}
 
 	/**
@@ -43,13 +55,23 @@ class MenuFactory
 	 *
 	 * If no name is specified for the menu a RuntimeException will be thrown.
 	 *
-	 * @param MenuTypeInterface $type
+	 * @param string|MenuTypeInterface $type
 	 * @param MenuInterface $menu
-	 * @return MenuInterface
 	 * @throws \RuntimeException
+	 * @throws \Hw\BasicsBundle\Exception\UnexpectedTypeException
+	 * @return MenuInterface
 	 */
-	public function create(MenuTypeInterface $type, MenuInterface $menu)
+	public function create($type, MenuInterface $menu)
 	{
+		if (is_string($type))
+		{
+			$type = $this->typeExtension->getType($type);
+		}
+		if (!($type instanceof MenuTypeInterface))
+		{
+			throw new UnexpectedTypeException($type, 'string or Hw\BasicsBundle\Menu\MenuTypeInterface');
+		}
+
 		$type->build($menu);
 
 		$key = $type->getName();
