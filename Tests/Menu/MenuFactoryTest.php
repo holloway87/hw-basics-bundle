@@ -43,15 +43,17 @@ class MenuFactoryTest extends ContainerTestCase
 	 *
 	 * * Checks if menu was created.
 	 * * Checks for item count after factoring.
+	 * * Check that factory sets menu name.
 	 *
 	 * @depends testServiceExistence
+	 * @since 2014.08.30 Added check that factory sets menu name.
 	 */
 	public function testFactory()
 	{
 		$container = $this->getContainer();
 		$factory = $container->get('hw_basics.menufactory');
 
-		$factory->create(new SimpleMenuType(), new Menu());
+		$menu = $factory->create(new SimpleMenuType(), new Menu());
 		$items = $container->get('hw_basics.layoutservice')->getMenuItems('test');
 
 		// Checks if menu was created.
@@ -59,6 +61,9 @@ class MenuFactoryTest extends ContainerTestCase
 
 		// Checks for item count after factoring.
 		$this->assertCount(2, $items);
+
+		// Check that factory sets menu name.
+		$this->assertEquals(SimpleMenuType::NAME, $menu->getName());
 	}
 
 	/**

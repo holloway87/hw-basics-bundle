@@ -36,6 +36,13 @@ class Menu extends AbstractMenuBasic implements MenuInterface
 	 */
 	private $items;
 
+	/**
+	 * The name the menu is identified with.
+	 *
+	 * @var string
+	 */
+	private $name;
+
 
 	/**
 	 * Sets an empty items array.
@@ -120,6 +127,14 @@ class Menu extends AbstractMenuBasic implements MenuInterface
 	/**
 	 * {@inheritdoc}
 	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function isMenu()
 	{
 		return true;
@@ -161,6 +176,15 @@ class Menu extends AbstractMenuBasic implements MenuInterface
 		$this->items[$key]->setActive(true);
 		$this->activeItem = $key;
 
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 		return $this;
 	}
 

@@ -20,6 +20,8 @@ use Hw\BasicsBundle\Menu\MenuItem;
 class SimpleMenuType extends AbstractMenuType
 {
 
+	const NAME = 'test';
+
 	/**
 	 * Adds menu items to the menu.
 	 *
@@ -38,7 +40,7 @@ class SimpleMenuType extends AbstractMenuType
 	 */
 	public function getName()
 	{
-		return 'test';
+		return self::NAME;
 	}
 
 }

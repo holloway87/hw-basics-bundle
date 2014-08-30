@@ -79,6 +79,7 @@ class MenuFactory
 		{
 			throw new \RuntimeException(sprintf('menu type %s returned no name', $key));
 		}
+		$menu->setName($type->getName());
 
 		$this->layoutservice->addMenu($key, $menu);
 		return $menu;

@@ -65,6 +65,16 @@ interface MenuInterface extends MenuBasicInterface
 	public function getItems();
 
 	/**
+	 * Returns the name the menu is identified with.
+	 *
+	 * Will be filled by the menu factory.
+	 *
+	 * @since 2014.08.30
+	 * @return string
+	 */
+	public function getName();
+
+	/**
 	 * Removes the item with the given key.
 	 *
 	 * @param string $key
@@ -81,5 +91,14 @@ interface MenuInterface extends MenuBasicInterface
 	 * @return bool
 	 */
 	public function setActiveItem($key);
+
+	/**
+	 * Sets the name the menu is identified with.
+	 *
+	 * @since 2014.08.30
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName($name);
 
 }
