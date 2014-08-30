@@ -9,6 +9,8 @@
 namespace Hw\BasicsBundle\Tests\Controller;
 
 use Hw\BasicsBundle\Controller\BaseController;
+use Hw\BasicsBundle\Test\ContainerTestCase;
+use Hw\BasicsBundle\Tests\Menu\Type\SimpleMenuType;
 
 
 /**
@@ -17,7 +19,7 @@ use Hw\BasicsBundle\Controller\BaseController;
  * @author Thomas Rudolph <me@holloway-web.de>
  * @since 2014.07.29
  */
-class BaseControllerTest extends \PHPUnit_Framework_TestCase
+class BaseControllerTest extends ContainerTestCase
 {
 
 	/**
@@ -37,6 +39,28 @@ class BaseControllerTest extends \PHPUnit_Framework_TestCase
 		// And another one with passed characters.
 		$password = BaseController::generatePassword($length, '0th3r');
 		$this->assertEquals($length, strlen($password));
+	}
+
+	/**
+	 * Checks the create menu method.
+	 *
+	 * * Check for menu factory service existance.
+	 * * Check if correct item is set as active via controller method.
+	 *
+	 * @since 2014.08.29
+	 */
+	public function testCreateMenu()
+	{
+		// Check for menu factory service existance.
+		$this->assertServiceExistence('hw_basics.menufactory');
+
+		// Prepare controller.
+		$controller = new BaseController();
+		$controller->setContainer($this->getContainer());
+
+		// Check if correct item is set as active via controller method.
+		$menu = $controller->createMenu(new SimpleMenuType(), 'item1');
+		$this->assertTrue($menu->get('item1')->getActive());
 	}
 
 }

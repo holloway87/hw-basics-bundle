@@ -47,17 +47,19 @@ class BaseController extends Controller
 	 *
 	 * Per default it uses the Menu class from the HwBasicsBundle.
 	 *
-	 * @param MenuTypeInterface $type
-	 * @param MenuInterface|null $menu
+	 * @param MenuTypeInterface|string $type
+	 * @param string|null $activeItem
 	 * @return MenuInterface
 	 */
-	public function createMenu(MenuTypeInterface $type, $menu = null)
+	public function createMenu($type, $activeItem = null)
 	{
-		if (is_null($menu))
+		$menuClass = $this->container->getParameter('hw_basics.menu.class');
+		$menu = $this->get('hw_basics.menufactory')->create($type, new $menuClass());
+		if (!is_null($activeItem))
 		{
-			$menu = new Menu();
+			$menu->setActiveItem($activeItem);
 		}
-		return $this->get('hw_basics.menufactory')->create($type, $menu);
+		return $menu;
 	}
 
 	/**

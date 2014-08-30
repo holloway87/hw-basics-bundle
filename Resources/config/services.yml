@@ -1,5 +1,6 @@
 parameters:
     hw_basics.layoutservice.class: Hw\BasicsBundle\Twig\LayoutService
+    hw_basics.menu.class: Hw\BasicsBundle\Menu\Menu
     hw_basics.menufactory.class: Hw\BasicsBundle\Menu\MenuFactory
 
 services:
