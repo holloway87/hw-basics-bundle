@@ -8,7 +8,6 @@
 
 namespace Hw\BasicsBundle\Controller;
 
-use Hw\BasicsBundle\Menu\Menu;
 use Hw\BasicsBundle\Menu\MenuInterface;
 use Hw\BasicsBundle\Menu\MenuTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
