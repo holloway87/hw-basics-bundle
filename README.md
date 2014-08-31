@@ -31,7 +31,7 @@ These are some features this bundle gives you:
  * A base controller class exists to easily encode an entity's password or generate a random one
  * Copy twitter bootstrap files to your resource directory on composer update or install
  * A utility class to manipulate images with the gd library (cut a rectangle, resize, black & white filter, ...)
- * Classes exist to do easily execute a curl request and access the response data
+ * Classes exist to easily execute a curl request and access the response data
 
 
 Feature plans
