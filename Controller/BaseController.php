@@ -10,6 +10,7 @@ namespace Hw\BasicsBundle\Controller;
 
 use Hw\BasicsBundle\Menu\MenuInterface;
 use Hw\BasicsBundle\Menu\MenuTypeInterface;
+use Hw\BasicsBundle\Util\VarAtPath;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -84,6 +85,19 @@ class BaseController extends Controller
 			$password .= $char;
 		}
 		return $password;
+	}
+
+	/**
+	 * Wrapper for VarAtPath utility.
+	 *
+	 * @see Hw\BasicsBundle\Util\VarAtPath::get()
+	 * @param mixed $var
+	 * @param string $path
+	 * @return mixed
+	 */
+	public static function getVarAtPath($var, $path)
+	{
+		return VarAtPath::get($var, $path);
 	}
 
 	/**
