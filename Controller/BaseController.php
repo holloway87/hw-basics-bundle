@@ -86,4 +86,24 @@ class BaseController extends Controller
 		return $password;
 	}
 
+	/**
+	 * Returns if the user is logged in.
+	 *
+	 * If the security context service is not available it returns false.
+	 *
+	 * @since 2014.08.31
+	 * @return boolean
+	 */
+	public function isLoggedIn()
+	{
+		if ($this->has('security.context'))
+		{
+			return false;
+		}
+
+		return $this->get('security.context')
+			->isGranted('IS_AUTHENTICATED_FULLY')
+			? true : false;
+	}
+
 }
