@@ -19,6 +19,21 @@ class CurlRequest
 {
 
 	/**
+	 * Whether to follow redirects or not
+	 *
+	 * @var bool
+	 */
+	private static $follow;
+
+	/**
+	 * Maximum times for manually following redirects
+	 *
+	 * @var int
+	 */
+	private static $maxRedirects;
+
+
+	/**
 	 * Checks for curl functions.
 	 *
 	 * @throws \RuntimeException
@@ -36,6 +51,7 @@ class CurlRequest
 	 *
 	 * @param resource $curl
 	 * @param $requestedUrl
+	 * @throws \RuntimeException
 	 * @return CurlResponse
 	 */
 	private static function _execute($curl, $requestedUrl)
@@ -45,6 +61,24 @@ class CurlRequest
 		$error = curl_error($curl);
 		$info = curl_getinfo($curl);
 
+		// Workaround to follow redirects in old php version (Screw them)
+		$version = explode('.', phpversion());
+		$version = intval($version[0].$version[1]);
+		if (54 > $version and self::$follow and 0 < self::$maxRedirects)
+		{
+			if (!isset($info['redirect_url']))
+			{
+				throw new \RuntimeException('no redirect url in curl info');
+			}
+			if (preg_match('#^https?://#i', $info['redirect_url']))
+			{
+				self::$maxRedirects--;
+				curl_setopt($curl, CURLOPT_URL, $info['redirect_url']);
+				return self::_execute($curl, $requestedUrl);
+			}
+		}
+
+		curl_close($curl);
 		return new CurlResponse($response, $requestedUrl, $info, $errno, $error);
 	}
 
@@ -70,6 +104,39 @@ class CurlRequest
 	}
 
 	/**
+	 * Appends all options set by the curl data object and then set them to the curl resource.
+	 *
+	 * Oh, and a dirty hack to apply following redirects to php < 5.4
+	 *
+	 * @param resource $curl
+	 * @param array $options
+	 * @param Curl $curlData
+	 */
+	public static function _setCurlOptions($curl, array $options, Curl $curlData)
+	{
+		$version = explode('.', phpversion());
+		$version = intval($version[0].$version[1]);
+		foreach ($curlData->getCurlOptions() as $option => $value)
+		{
+			if (54 > $version and CURLOPT_FOLLOWLOCATION == $option)
+			{
+				if (!$value)
+				{
+					self::$follow = false;
+				}
+			}
+			$options[$option] = $value;
+		}
+		if (54 > $version and self::$follow)
+		{
+			$options[CURLOPT_FOLLOWLOCATION] = false;
+			self::$follow = true;
+			self::$maxRedirects = 10;
+		}
+		curl_setopt_array($curl, $options);
+	}
+
+	/**
 	 * Does a HEAD request.
 	 *
 	 * In the response is only the header.
@@ -83,6 +150,7 @@ class CurlRequest
 		$url = $curlData->compileUrl()->getUrl();
 		$curl = self::_initCurl($url);
 
+		self::$follow = true;
 		$options = array(
 			CURLOPT_HEADER => true,
 			CURLOPT_NOBODY => true,
@@ -91,11 +159,7 @@ class CurlRequest
 			CURLOPT_AUTOREFERER => true,
 			CURLOPT_FOLLOWLOCATION => true
 		);
-		foreach ($curlData->getCurlOptions() as $option => $value)
-		{
-			$options[$option] = $value;
-		}
-		curl_setopt_array($curl, $options);
+		self::_setCurlOptions($curl, $options, $curlData);
 
 		return self::_execute($curl, $url);
 	}
@@ -114,6 +178,7 @@ class CurlRequest
 		$url = $curlData->compileUrl()->getUrl();
 		$curl = self::_initCurl($url);
 
+		self::$follow = true;
 		$options = array(
 			CURLOPT_HEADER => false,
 			CURLOPT_RETURNTRANSFER => true,
@@ -126,11 +191,7 @@ class CurlRequest
 			$options[CURLOPT_POST] = true;
 			$options[CURLOPT_POSTFIELDS] = $curlData->getBody();
 		}
-		foreach ($curlData->getCurlOptions() as $option => $value)
-		{
-			$options[$option] = $value;
-		}
-		curl_setopt_array($curl, $options);
+		self::_setCurlOptions($curl, $options, $curlData);
 
 		return self::_execute($curl, $url);
 	}
