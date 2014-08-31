@@ -110,7 +110,7 @@ class BaseController extends Controller
 	 */
 	public function isLoggedIn()
 	{
-		if ($this->has('security.context'))
+		if (!$this->has('security.context'))
 		{
 			return false;
 		}
