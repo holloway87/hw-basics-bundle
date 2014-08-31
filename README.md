@@ -9,14 +9,14 @@ Installation
 
 ### Use Composer (*recommended*)
 
-The easiest way to install this bundle is via composer.  Just add it to the require list in the symfony project
+The easiest way to install this bundle is via composer.  Just add it to the require list in the symfony project's
 `composer.json`.
 
 	"holloway87/hw-basics-bundle": "dev-master"
 
 ### Download an archive
 
-You can download an archive on the repositorys [github page][1].  Extract the archive into your `src/` folder into
+You can download an archive on the repository's [github page][1].  Extract the archive into your `src/` folder into
 the directory `Hw/BasicsBundle`.
 
 
@@ -30,6 +30,7 @@ These are some features this bundle gives you:
  * Create Breadcrumbs and access them in your twig layouts with a global function
  * A base controller class exists to easily encode an entity's password or generate a random one
  * Copy twitter bootstrap files to your resource directory on composer update or install
+ * A utility class to manipulate images with the gd library (cut a rectangle, resize, black & white filter, ...)
 
 
 Feature plans
