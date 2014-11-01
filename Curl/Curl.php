@@ -40,6 +40,14 @@ class Curl
 	private $curlOptions;
 
 	/**
+	 * The maximum number of redirects.
+	 *
+	 * @since 2014.11.01
+	 * @var int
+	 */
+	private $maxRedirects;
+
+	/**
 	 * Get parameters for url.
 	 *
 	 * @var array
@@ -57,13 +65,18 @@ class Curl
 	/**
 	 * Sets default values.
 	 *
+	 * * Set base url as given to the constructor
 	 * * Optionally set the correct base url
+	 * * Maximum number of redirects: 10
 	 * * Empty array for get parameters
+	 *
+	 * @param null $baseUrl
 	 */
 	public function __construct($baseUrl = null)
 	{
 		$this->baseUrl = $baseUrl;
 		$this->curlOptions = array();
+		$this->maxRedirects = 10;
 		$this->parameters = array();
 	}
 
@@ -124,6 +137,17 @@ class Curl
 	public function getCurlOptions()
 	{
 		return $this->curlOptions;
+	}
+
+	/**
+	 * Returns the maximum number of redirects.
+	 *
+	 * @since 2014.11.01
+	 * @return int
+	 */
+	public function getMaxRedirects()
+	{
+		return $this->maxRedirects;
 	}
 
 	/**
@@ -200,6 +224,21 @@ class Curl
 	public function setCurlOptions(array $curlOptions)
 	{
 		$this->curlOptions = $curlOptions;
+		return $this;
+	}
+
+	/**
+	 * Set the maximum number of redirects.
+	 *
+	 * To disabled it set the number to 0.
+	 *
+	 * @since 2014.11.01
+	 * @param int $maxRedirects
+	 * @return $this
+	 */
+	public function setMaxRedirects($maxRedirects)
+	{
+		$this->maxRedirects = $maxRedirects;
 		return $this;
 	}
 

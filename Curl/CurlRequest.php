@@ -19,13 +19,6 @@ class CurlRequest
 {
 
 	/**
-	 * Whether to follow redirects or not
-	 *
-	 * @var bool
-	 */
-	private static $follow;
-
-	/**
 	 * Maximum times for manually following redirects
 	 *
 	 * @var int
@@ -61,10 +54,8 @@ class CurlRequest
 		$error = curl_error($curl);
 		$info = curl_getinfo($curl);
 
-		// Workaround to follow redirects in old php version (Screw them)
-		$version = explode('.', phpversion());
-		$version = intval($version[0].$version[1]);
-		if (54 > $version and self::$follow and 0 < self::$maxRedirects)
+		// Check for redirect, only if number of redirects is not 0
+		if (0 < self::$maxRedirects)
 		{
 			if (!isset($info['redirect_url']))
 			{
@@ -114,24 +105,9 @@ class CurlRequest
 	 */
 	public static function _setCurlOptions($curl, array $options, Curl $curlData)
 	{
-		$version = explode('.', phpversion());
-		$version = intval($version[0].$version[1]);
 		foreach ($curlData->getCurlOptions() as $option => $value)
 		{
-			if (54 > $version and CURLOPT_FOLLOWLOCATION == $option)
-			{
-				if (!$value)
-				{
-					self::$follow = false;
-				}
-			}
 			$options[$option] = $value;
-		}
-		if (54 > $version and self::$follow)
-		{
-			$options[CURLOPT_FOLLOWLOCATION] = false;
-			self::$follow = true;
-			self::$maxRedirects = 10;
 		}
 		curl_setopt_array($curl, $options);
 	}
@@ -150,14 +126,13 @@ class CurlRequest
 		$url = $curlData->compileUrl()->getUrl();
 		$curl = self::_initCurl($url);
 
-		self::$follow = true;
+		self::$maxRedirects = $curlData->getMaxRedirects();
 		$options = array(
 			CURLOPT_HEADER => true,
 			CURLOPT_NOBODY => true,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FAILONERROR => false,
-			CURLOPT_AUTOREFERER => true,
-			CURLOPT_FOLLOWLOCATION => true
+			CURLOPT_AUTOREFERER => true
 		);
 		self::_setCurlOptions($curl, $options, $curlData);
 
@@ -178,13 +153,12 @@ class CurlRequest
 		$url = $curlData->compileUrl()->getUrl();
 		$curl = self::_initCurl($url);
 
-		self::$follow = true;
+		self::$maxRedirects = $curlData->getMaxRedirects();
 		$options = array(
 			CURLOPT_HEADER => false,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FAILONERROR => false,
-			CURLOPT_AUTOREFERER => true,
-			CURLOPT_FOLLOWLOCATION => true
+			CURLOPT_AUTOREFERER => true
 		);
 		if ($curlData->getBody())
 		{
