@@ -51,7 +51,7 @@ class ImageManipulator
 	public function __construct($file)
 	{
 		// first try the file extension
-		if(preg_match('/\.(?P<extension>jpe?g|png)$/i', $file, $ext_match))
+		if(preg_match('/\.(?P<extension>jpe?g|png|gif)$/i', $file, $ext_match))
 		{
 			$this->extension = $ext_match['extension'];
 		}
@@ -59,7 +59,7 @@ class ImageManipulator
 		else
 		{
 			$info = getimagesize($file);
-			preg_match('/image\/(?<extension>(x-)?png|jpe?g)/i', $info['mime'], $ext_match);
+			preg_match('/image\/(?<extension>(x-)?png|jpe?g|gif)/i', $info['mime'], $ext_match);
 			if(!$ext_match)
 			{
 				return;
@@ -73,6 +73,9 @@ class ImageManipulator
 				case 'jpeg':
 				case 'jpg':
 					$this->extension = 'jpg';
+					break;
+				case 'gif':
+					$this->extension = 'gif';
 			}
 		}
 
@@ -99,6 +102,8 @@ class ImageManipulator
 				return 'imagecreatefromjpeg';
 			case 'png':
 				return 'imagecreatefrompng';
+			case 'gif':
+				return 'imagecreatefromgif';
 			default:
 				return '';
 		}
@@ -118,6 +123,8 @@ class ImageManipulator
 				return 'imagejpeg';
 			case 'png':
 				return 'imagepng';
+			case 'gif':
+				return 'imagegif';
 			default:
 				return '';
 		}
@@ -195,6 +202,8 @@ class ImageManipulator
 				return 'image/jpeg';
 			case 'png':
 				return 'image/png';
+			case 'gif':
+				return 'image/gif';
 			default:
 				return '';
 		}
@@ -306,7 +315,7 @@ class ImageManipulator
 	 */
 	public function setExtension($extension)
 	{
-		if(!preg_match('/^(?P<extension>jpe?g|png)$/i', $extension, $ext_match))
+		if(!preg_match('/^(?P<extension>jpe?g|png|gif)$/i', $extension, $ext_match))
 		{
 			return false;
 		}
