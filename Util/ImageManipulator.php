@@ -81,6 +81,10 @@ class ImageManipulator
 
 		// create image
 		$create_function = $this->_getCreateFunction();
+		if (!$create_function)
+		{
+			throw new \RuntimeException(sprintf('Image with filename "%s" is an unsupported type.', $file));
+		}
 		$this->img = $this->img_orig = $create_function($file);
 		if (false === $this->img)
 		{
