@@ -1,23 +1,22 @@
 {
-	"name": "holloway87/hw-basics-bundle",
-	"type": "symfony-bundle",
-	"description": "Symfony Basics Bundle",
-	"keywords": ["symfony", "basics", "layout", "bundle"],
-	"homepage": "https://github.com/holloway87/hw-basics-bundle",
-	"license": "WTFPL",
-	"authors": [
-		{
-			"name": "Thomas Rudolph",
-			"email": "me@holloway-web.de"
-		}
-	],
-	"require": {
-		"php": ">=5.2.4",
-		"symfony/framework-bundle": "~2.4"
-	},
-	"autoload": {
-		"psr-0": { "Hw\\BasicsBundle": "" }
-	},
-	"target-dir": "Hw/BasicsBundle",
-	"minimum-stability": "dev"
+    "name": "holloway87/hw-basics-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony Basics Bundle",
+    "keywords": ["symfony", "basics", "layout", "bundle"],
+    "homepage": "https://github.com/holloway87/hw-basics-bundle",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Thomas Rudolph",
+            "email": "me@holloway-web.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.4",
+        "symfony/framework-bundle": "~2.4|~3.0"
+    },
+    "autoload": {
+        "psr-4": { "Hw\\BasicsBundle\\": "" }
+    },
+    "minimum-stability": "dev"
 }
