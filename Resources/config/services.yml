@@ -6,15 +6,15 @@ parameters:
 services:
     hw_basics.menu.typeextension:
         class: Hw\BasicsBundle\Menu\TypeExtension
-        arguments: ["@service_container", collection]
+        arguments: ['@service_container', collection]
         public: false
     hw_basics.layoutservice:
-        class: %hw_basics.layoutservice.class%
+        class: '%hw_basics.layoutservice.class%'
     hw_basics.menufactory:
-        class: %hw_basics.menufactory.class%
-        arguments: ["@hw_basics.layoutservice", "@hw_basics.menu.typeextension"]
+        class: '%hw_basics.menufactory.class%'
+        arguments: ['@hw_basics.layoutservice', '@hw_basics.menu.typeextension']
     hw_basics.twig.hw_basics_extension:
         class: Hw\BasicsBundle\Twig\HwBasicsExtension
-        arguments: ["@hw_basics.layoutservice"]
+        arguments: ['@hw_basics.layoutservice']
         tags:
             - { name: twig.extension }
